@@ -8,6 +8,11 @@ public interface IExplodingElement
 
 }
 
+public interface IAffectable
+{
+    void OnActivate();
+}
+
 public interface IPickupable
 {
     void PickUp();
