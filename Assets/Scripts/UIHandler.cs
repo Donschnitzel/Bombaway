@@ -17,7 +17,7 @@ public class UIHandler : Singleton<UIHandler>
     [SerializeField]
     GameObject scoreSection;
     [SerializeField]
-    TextMeshProUGUI scoreGnomes, scoreBombs, score;
+    TextMeshProUGUI scoreGnomes, scoreBombs, score, scoreTime;
 
     private void Start()
     {
@@ -39,7 +39,7 @@ public class UIHandler : Singleton<UIHandler>
     {
         var bombs = GameObject.FindObjectsOfType<Bomb>();
 
-        ShowFinalScore(BombsAndGoblinsTracker.Instance.CollectedGoblins, BombsAndGoblinsTracker.Instance.TotalGoblins, bombs.Length, Score.Instance.Amount);
+        ShowFinalScore(BombsAndGoblinsTracker.Instance.CollectedGoblins, BombsAndGoblinsTracker.Instance.TotalGoblins, BombsAndGoblinsTracker.Instance.TotalBomBs, bombs.Length, Score.Instance.Amount);
     }
 
 
@@ -80,11 +80,15 @@ public class UIHandler : Singleton<UIHandler>
         }
     }
 
-    public void ShowFinalScore(int gnomesCollected, int gnomesMax, int bombsLeft, int scoreFinal)
+    public void ShowFinalScore(int gnomesCollected, int gnomesMax, int bombsMax, int bombsLeft, int scoreFinal)
     {
+        scoreFinal += Mathf.RoundToInt(60 - Time.timeSinceLevelLoad);
+        scoreFinal = scoreFinal < 0 ? 0 : scoreFinal;
+        scoreFinal = Mathf.RoundToInt(scoreFinal * 0.1f) * 10;
         scoreSection.SetActive(true);
-        scoreGnomes.text = gnomesCollected + " / " + gnomesMax + " Gnomes saved";
-        scoreBombs.text = bombsLeft + " bombs left";
+        scoreGnomes.text = gnomesCollected + " / " + gnomesMax + " Gnomes saved. Points:" + (gnomesCollected*200-(gnomesMax-gnomesCollected)*-500);
+        scoreBombs.text = bombsLeft + " / " + bombsMax + " Bombs used. Points: " + (bombsMax-bombsLeft)*100;
+        scoreTime.text = "Timebonus " + Mathf.RoundToInt(60 - Time.timeSinceLevelLoad).ToString();
         score.text = scoreFinal.ToString();
     }
 

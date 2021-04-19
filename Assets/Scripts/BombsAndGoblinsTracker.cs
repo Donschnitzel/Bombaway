@@ -9,6 +9,7 @@ public class BombsAndGoblinsTracker : Singleton<BombsAndGoblinsTracker>
 
     int goblinsCollected;
     int totalGoblins;
+    int totalBombs;
     int bombsLeft;
 
     public event System.Action CollectedAllGoblins;
@@ -17,12 +18,14 @@ public class BombsAndGoblinsTracker : Singleton<BombsAndGoblinsTracker>
 
     public int CollectedGoblins { get => Instance.goblinsCollected; }
     public int TotalGoblins { get => Instance.totalGoblins; }
+    public int TotalBomBs { get => Instance.totalBombs; }
 
     protected override void Awake()
     {
         base.Awake();
         totalGoblins = GameObject.FindObjectsOfType<Goblin>().Length;
-        bombsLeft = GameObject.FindObjectsOfType<Bomb>().Length;
+        totalBombs = GameObject.FindObjectsOfType<Bomb>().Length;
+        bombsLeft = totalBombs;
         goblinsCollected = 0;
     }
 
